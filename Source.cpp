@@ -1,10 +1,15 @@
-#include <Python.h> // Python header file
-#include <iostream> // input/output stream
-#include <Windows.h> // windows header file
-#include <cmath> // declares a set of functions to compute common mathematical operations
-#include <string> //allows for string input
-#include <fstream> //file stream
-#include <iomanip> //set precision
+/*  Assignment 6:Integrating Languages
+	CS210 Professor Eric Gregori
+	Code written by Derek Bamford
+*/
+
+
+#include <Python.h>
+#include <iostream>
+#include <Windows.h>
+#include <cmath>
+#include <string>
+#include <stdexcept> 
 
 using namespace std;
 
@@ -140,99 +145,47 @@ int callIntFunc(string proc, int param)
 	return _PyLong_AsInt(presult);
 }
 
-int main(){
 
-	ifstream itemFile; //input file stream 
-	string item;
-	int count; 
-	int i = 0;
+void main(){
 
-	// Changes the color of the text being displayed to green
-	system("Color 02"); 
 
-	int menuSelection;
-	do { //do while loop for the menu selection
-		cout << "        Make a selection         " << endl;
-		cout << "*********************************" << endl;
-		cout << "* 1.  List all items purchased  *" << endl;
-		cout << "* 2.  Search for single item    *" << endl;
-		cout << "* 3.  Histogram of items        *" << endl;
-		cout << "* 4.  Exit Program              *" << endl;
-		cout << "*********************************" << endl;
-		cout << endl;
+		int userInput = 0;
+		int num = 0;
+		// Loops the menu choices until user quits by pressing 3
+		do {
 
-		do { //do while loop for the user input validation
+				//prints menu selection screen
+				cout << endl;
+				cout << "*********************************************" << endl;
+				cout << "1: Display a Multiplication Table" << endl;
+				cout << "2: Double a value" << endl;
+				cout << "3: Exit" << endl;
+				cout << "Enter your selection as a number 1, 2, or 3." << endl;
+				cout << "*********************************************" << endl;
 
-			cin >> menuSelection;
-			if (cin.fail()) {
-				cin.clear(); //clears cin buffer
-				cin.ignore(80, '\n');
-			}
-		} while (cin.fail()); //loops wull cin.fail is trur
+			do {//checks that user input is an integer, loops until correct input is selected
+					cin >> userInput;
+					system("CLS"); //clears screen after user makes a menu selection
+					if (cin.fail()) {
+						cin.clear();
+						cin.ignore(80, '\n');
+					}
+			} while (cin.fail());
 
-		switch (menuSelection) {
-		case 1:
-			//calls the Python definition to produce a dictionary and print to the terminal
-			CallProcedure("itemsSoldList"); 
-			cout << endl;
-			break; //prevents fall through of switch case
-		case 2:
-			cout << "Seach For Item Quantity" << endl;
-
-				cin >> item; //stores user input into variable
-				item[0] = toupper(item[0]); //sets the first character of user input to be capitalized
-
-				// Passes the name of the Python function and the user input as the string parameter then prints to terminal
-				cout << item << "                " << callIntFunc("itemsSearch", item) << endl;
-			cout << endl;
-			break;
-		case 3:
-			cout << "Histogram Of Items" << endl;
-			CallProcedure("itemsHistograms");
-
-			// Opens .dat file
-			itemFile.open("frequency.dat");
-
-			// Code to check if .dat file is open properly
-			if (!itemFile.is_open()) {
-				cout << "Could not open file frequency.dat" << endl;
-				return 1;
-			}
-			else {
-				cout << ("      Item Histogram") << endl;
-				cout << ("============================= ") << endl;
-				cout << ("Item               Number Sold") << endl;
-				cout << ("-----------------------------") << endl;
-				
-				/* while the stream extraction operator is still able to get a string from the .dat 
-				 * the loop will continue through the end of the file.  
-				 * I originally tried eof but learned that it only returns true after reading the end of the stream 
-				 * and does not indicate, that the next read will be the end of the stream.
-				 * I used a for loop and the extraction operator to print '*' for each item count
-				*/ 
-				while (itemFile >> item) {
-					cout <<left<< setw(11) << item << right << setw(10);
-					itemFile >> count;
-						for (i = 0; i < count; ++i) {
-							cout << '*';
-						}
-					cout << endl;
-				}
-			}
-			cout << endl;
-			itemFile.close(); //closes file
-			break;
-		case 4:
-			//Exits program after user enters 4
-			cout << "Exit Program" << endl;
-			break;
-
-			// default used as partial user input error handling
-		default:
-			cout << "Not a valid menu choice" << endl;
-			cout << endl;
-			break;
-		}
-	} while (menuSelection != 4);
-	return 0;
+				switch (userInput) {
+				case 1:
+					CallProcedure("MultiplicationTable"); //calls the Python code to be run and displayed
+					break;
+				case 2:
+					cout << "Enter a number to be doubled" << endl;
+					cin >> num;
+					cout << callIntFunc("Doublevalue", num) << " is "<< num <<" doubled"<< endl;//calls the Python and passes user input
+					break;
+				case 3:
+					std::cout << "Goodbye" << endl;//Prints in user chooses to exit program
+					break;
+				default:
+					std::cout << "Invalid Input"<<std::endl;
+				}	
+		} while (userInput != 3);
 }
