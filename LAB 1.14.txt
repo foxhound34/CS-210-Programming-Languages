@@ -1,0 +1,12 @@
+// Allows us to read or write to the standard input/output stream
+#include <iostream>
+using namespace std;
+
+int main() {
+
+   //Character out, insertion operator, Literal String, insertion operator, end with new line
+   cout << "Hello World!" << endl;
+   
+   // Closes Program
+   return 0;
+}

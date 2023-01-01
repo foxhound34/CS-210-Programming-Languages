@@ -1,0 +1,26 @@
+#ifndef CONTACT_NODE_H //Header guards
+#define CONTACT_NODE_H
+
+#include <string>
+using namespace std;
+
+class ContactNode {
+public:
+
+   //public member functions
+   ContactNode(string dataInit = "NoName", string phoneInit = "NoName", ContactNode* nextLoc = nullptr);
+   void InsertAfter(ContactNode* nodeLoc);
+   string GetName() const;
+   string GetPhoneNumber() const;
+   ContactNode* GetNext();
+   void PrintNodeData();
+   
+ 
+private:
+   // private member variables  
+   string contactName;
+   string contactPhoneNum;
+   ContactNode* nextNodePtr;
+};
+
+#endif

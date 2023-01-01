@@ -1,0 +1,29 @@
+#include <iostream> // Allows for user input
+#include <iomanip> // For setprecision
+using namespace std;
+
+//function set up with calculations
+double DrivingCost(double drivenMiles, double milesPerGallon, double dollarsPerGallon){ 
+   double travelCost; //Initializes a variable that does not need to be in main()
+   travelCost = (drivenMiles/milesPerGallon) * dollarsPerGallon; // returns the calculations when called
+   return travelCost; 
+}
+int main() {
+   //initializes the input variables in main
+   double milesPerGallon; 
+   double dollarsPerGallon;
+   
+   //character in with extaction operator takes user input
+   cin >> milesPerGallon;
+   cin >> dollarsPerGallon; 
+   
+   cout << fixed << setprecision(2); // Set precision of output to two decimal places
+   
+ //Calls the function and hard codes the miles driven  
+   cout << DrivingCost(10, milesPerGallon, dollarsPerGallon)<< " "; 
+   cout << DrivingCost(50, milesPerGallon, dollarsPerGallon)<< " ";
+   cout << DrivingCost(400, milesPerGallon, dollarsPerGallon) <<endl;
+   
+// closes the program
+   return 0; 
+}

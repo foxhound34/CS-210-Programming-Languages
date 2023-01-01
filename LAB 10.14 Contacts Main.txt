@@ -1,0 +1,65 @@
+//Zybooks 10.5 was used as reference
+
+#include <iostream>// alllows for input/output streams
+#include "ContactNode.h" // header file to be included
+using namespace std;
+
+int main() {
+   
+   //Creates ContactNode objects
+   ContactNode* headObj  = nullptr;
+   ContactNode* nodeObj1 = nullptr;
+   ContactNode* nodeObj2 = nullptr;
+   ContactNode* currObj  = nullptr;
+   
+   // variable declaration
+    string contactName;
+    string contactPhoneNum;
+    
+   //Asks user for input
+   cout<< "Person 1" <<endl;
+   cout<< "Enter name:"<<endl;
+   getline(cin, contactName); //gets line of text including whitespaces
+   cout << "Enter phone number:" << endl;
+   cin >> contactPhoneNum;
+   cout << "You entered: " << contactName << ", " << contactPhoneNum << endl << endl;
+   
+   //front of node list
+   headObj = new ContactNode(contactName,contactPhoneNum);
+   
+   cin.ignore();// clears cin buffer to accept new input
+   
+   cout<< "Person 2" <<endl;
+   cout<< "Enter name:"<<endl;
+   getline(cin, contactName);
+   cout << "Enter phone number:" << endl;
+   cin >> contactPhoneNum;
+   cout << "You entered: " << contactName << ", " << contactPhoneNum << endl << endl;
+   
+   nodeObj1 = new ContactNode(contactName,contactPhoneNum); 
+   headObj->InsertAfter(nodeObj1);
+   
+   cin.ignore();
+   
+   cout<< "Person 3" <<endl;
+   cout<< "Enter name:"<<endl;
+   getline(cin, contactName);
+   cout << "Enter phone number:" << endl;
+   cin >> contactPhoneNum;
+   cout << "You entered: " << contactName << ", " << contactPhoneNum << endl << endl;
+
+   nodeObj2 = new ContactNode(contactName,contactPhoneNum);
+   nodeObj1->InsertAfter(nodeObj2);
+   
+   cout << "CONTACT LIST" <<endl;
+   
+   currObj = headObj;
+   
+   //prints the linked list
+   while (currObj != nullptr) {
+      currObj->PrintNodeData();
+      currObj = currObj->GetNext();
+   }
+   
+   return 0;
+}

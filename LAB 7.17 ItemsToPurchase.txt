@@ -1,0 +1,30 @@
+#include <iostream>
+#include "ItemToPurchase.h"
+
+using namespace std;
+
+// allow us to set the private member variables
+void ItemToPurchase::SetName(string itemName) {
+   name = itemName;
+}
+
+void ItemToPurchase::SetPrice(int itemPrice) {
+   price = itemPrice;
+}
+
+void ItemToPurchase::SetQuantity(int itemQuantity) {
+   quantity = itemQuantity;
+}
+
+// allow us to get the private member variables
+string ItemToPurchase::GetName() const {
+   return name;
+}
+
+int ItemToPurchase::GetPrice() const {
+   return price;
+}
+
+int ItemToPurchase::GetQuantity() const {
+   return quantity;
+}

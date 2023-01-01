@@ -1,0 +1,68 @@
+#include <iostream> //Allows for input/ouput streams
+using namespace std;
+
+#include "ItemToPurchase.h" //allows main.cpp to "see" the .h file
+   
+int main() {
+   //initialization of objects used to call methods
+    ItemToPurchase userItem1; 
+    ItemToPurchase userItem2;
+    
+   //initialization of variables
+    string itemName;
+    int itemPrice;
+    int itemQuantity;
+    int itemOneTotal;
+    int itemTwoTotal;
+    int cartTotal;
+    
+    cout << "Item 1" <<endl;
+    cout << "Enter the item name:" <<endl;
+    getline(cin,itemName); //takes the entire user input, including whitespace, and stores it in a variable
+    
+    cout << "Enter the item price:" <<endl;
+    cin >> itemPrice;
+    
+    cout << "Enter the item quantity:" <<endl;
+    cin >> itemQuantity;
+    cout<<endl;
+    
+    //using the object to call and set the private method using the user input as the attribute
+    userItem1.SetName(itemName);
+    userItem1.SetPrice(itemPrice);
+    userItem1.SetQuantity(itemQuantity);
+    
+    //calculates total price for one item
+    itemOneTotal = userItem1.GetPrice() * userItem1.GetQuantity();
+    
+    //clears buffer so we can accept additional input
+    cin.ignore();
+    
+    cout << "Item 2"<< endl;
+    cout << "Enter the item name:" <<endl;
+    getline(cin,itemName);
+    
+    cout << "Enter the item price:" <<endl;
+    cin >> itemPrice;
+    
+    cout << "Enter the item quantity:" <<endl;
+    cin >> itemQuantity;
+    cout<<endl;
+    
+    userItem2.SetName(itemName);
+    userItem2.SetPrice(itemPrice);
+    userItem2.SetQuantity(itemQuantity);
+    
+    //calculates total for second item then calculates cart total
+    itemTwoTotal = userItem2.GetPrice() * userItem2.GetQuantity();
+    cartTotal = itemOneTotal + itemTwoTotal;
+    
+    //call the get method on the object to return the value
+    cout<<"TOTAL COST"<< endl;
+    cout<< userItem1.GetName() << " "<<userItem1.GetQuantity()<< " @ $"<<userItem1.GetPrice()<<" = "<< '$'<< itemOneTotal<< endl;
+    cout<< userItem2.GetName() << " "<<userItem2.GetQuantity()<< " @ $"<<userItem2.GetPrice()<<" = "<< '$'<< itemTwoTotal<< endl;
+    cout<< endl;
+    cout<<"Total: $"<<cartTotal<<endl;
+    
+   return 0;
+}

@@ -1,0 +1,30 @@
+#include <iostream> // standard library for reading input and output
+#include <vector> //allows a vector to be initilaized
+#include <bits/stdc++.h> // non-standard header file of GNU C++ library
+using namespace std;
+
+void SortVector(vector<int>& myVec){ //function to be called with a pass-by reference of myVec 
+   int i;
+
+   for (i = 0; i < myVec.size(); ++i) { //adds user input to the resized vector Zybooks 6.4
+      cin >> myVec.at(i);
+   }
+   
+   // sorting code found at https://www.geeksforgeeks.org/sorting-a-vector-in-c/
+   sort(myVec.begin(), myVec.end()); //also Zybooks 7.15.2
+  
+    for (auto x : myVec) // This is called a range-based for loop
+        cout << x << " ";
+}
+
+int main() {
+   int firstInput; //initializes variable
+   vector <int> myVec; //intializes an empty vector
+   
+   cin >> firstInput; // takes first input from user
+   
+   myVec.resize(firstInput); // resizes vector to the first user input Zybooks 6.5.1
+   SortVector(myVec); //calls the function and passed the vector in as a parameter
+   cout << endl; // prints a new line at the end
+   return 0;
+}

@@ -1,0 +1,31 @@
+//Allows for user input and string detection
+#include <iostream>
+#include <string>
+using namespace std;
+
+int main() {
+//Sets variable identities to string, integer, boolean
+ string firstWord;
+ int firstNum;
+ bool exit = true;
+
+/* While loop will continue the program until user enters "quit" 
+* changing the boolean to false and breaking the loop
+*/
+
+while (exit) { 
+   // Character in captures the user input and sets the variables
+   cin >> firstWord;
+   cin >> firstNum;
+   
+   // if statement will catch if user wants to exit the program changing bool to false
+   if(firstWord == "quit" && firstNum == 0) {
+      exit = false;
+   }
+   else{
+   //character out prints to display and end with a new line
+   cout << "Eating " << firstNum << " " << firstWord << " a day keeps you happy and healthy." << endl;
+   }
+}  //Closes program
+   return 0;
+}

@@ -1,0 +1,22 @@
+#include <iostream>// Allows us to read or write to the standard input/output stream
+#include <iomanip>//For setprecision
+using namespace std;
+
+int main() {
+   // initalizes the variables as double
+   double dollarsPerGallon;
+   double milesPerGallon;
+   
+   // Character in accepts user input and sets the variables to the user input
+   cin >> milesPerGallon;
+   cin >> dollarsPerGallon;
+   
+   // fixes the decimal places to a precesion of the hundredths place
+   cout << fixed << setprecision(2);
+   
+   //Character out prints the arithmatic statements 
+   cout << (20 / milesPerGallon) * dollarsPerGallon<< " " << (75 / milesPerGallon) * dollarsPerGallon << " " << (500 / milesPerGallon) * dollarsPerGallon <<endl;
+
+   // Closes the program
+   return 0;
+}

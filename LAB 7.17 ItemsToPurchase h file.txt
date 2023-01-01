@@ -1,0 +1,24 @@
+#ifndef ITEM_TO_PURCHASE_H //header guards
+#define ITEM_TO_PURCHASE_H
+
+using namespace std;
+
+class ItemToPurchase {
+   //public get/set initialization allows access to user
+   public:
+      void   SetName(string itemName);
+      void   SetPrice(int itemPrice);
+      void   SetQuantity(int itemQuantity);
+      
+      string GetName() const;
+      int   GetPrice() const;
+      int   GetQuantity() const;
+      
+   //private member variables, restricts access from user
+   private:
+      string name;
+      int price;
+      int quantity;
+};
+
+#endif

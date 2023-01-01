@@ -1,0 +1,44 @@
+#include <iostream>
+using namespace std;
+
+#include "ContactNode.h"
+
+//calls the ContactNode class and passes three parameters in.
+ContactNode::ContactNode(string dataInit,string phoneInit, ContactNode* nextLoc) {
+   contactName = dataInit;
+   contactPhoneNum = phoneInit;
+   this->nextNodePtr = nextLoc;
+}
+
+void ContactNode::InsertAfter(ContactNode* nodeLoc) {
+   ContactNode* tmpNext = nullptr;
+
+   /*tmpNext is pointed to the head node's next node 
+   * the head node's nextNodePtr is pointed to the new node,
+   * and the new node's nextNodePtr is pointed to tmpNext.
+   */
+   
+   tmpNext = this->nextNodePtr; 
+   this->nextNodePtr = nodeLoc;    
+   nodeLoc->nextNodePtr = tmpNext; 
+}
+
+//getters allow for read only access
+string ContactNode::GetName() const {
+    return contactName;
+}
+
+string ContactNode::GetPhoneNumber() const {
+    return contactPhoneNum;
+}
+// Grab location pointed by nextNodePtr
+ContactNode* ContactNode::GetNext() {
+   return this->nextNodePtr;
+}
+//Method to be called in main for the print statement
+void ContactNode::PrintNodeData() {
+    cout << "Name: "<< this->contactName <<endl; 
+    cout << "Phone number: " << this->contactPhoneNum << endl;
+    cout<<endl;
+}
+
