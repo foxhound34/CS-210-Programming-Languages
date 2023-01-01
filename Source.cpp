@@ -1,174 +1,238 @@
-/* Project 1: CHADA Tech Clock
-   CS210 Professor Eric Gregori
-   Code Written by Derek Bamford
-   Date: 11/12/22 Uploaded
-*/
-
-#include <iostream> // standard input/output stream
-#include <string> //Allows for string data
-#include <stdlib.h>//standard library
+#include <Python.h> // Python header file
+#include <iostream> // input/output stream
+#include <Windows.h> // windows header file
+#include <cmath> // declares a set of functions to compute common mathematical operations
+#include <string> //allows for string input
+#include <fstream> //file stream
+#include <iomanip> //set precision
 
 using namespace std;
-#include "Header.h" //hearder for .ccp to read .h file containing our class
 
-//Code returns two didgit string or adds 0 to single string to make a two digit string
-string twoDigitString(unsigned int n) {
+/*
+Description:
+	To call this function, simply pass the function name in Python that you wish to call.
+Example:
+	callProcedure("printsomething");
+Output:
+	Python will print on the screen: Hello from python!
+Return:
+	None
+*/
+void CallProcedure(string pName)
+{
+	char* procname = new char[pName.length() + 1];
+	std::strcpy(procname, pName.c_str());
 
-    if (n >= 10 && n <= 59) {
-        string str = to_string(n);//converts integer to string
-        return str;
-    }
-    else {
-        string str = "0" + to_string(n);
-        return str;
-    }
-}
-//code loops to add char c to output, our output char will be *
-string nCharString(size_t n, char c) {
+	Py_Initialize();
+	PyObject* my_module = PyImport_ImportModule("PythonCode");
+	PyErr_Print();
+	PyObject* my_function = PyObject_GetAttrString(my_module, procname);
+	PyObject* my_result = PyObject_CallObject(my_function, NULL);
+	Py_Finalize();
 
-    string strVar;
-    int i;
-
-    for (i = 0; i < n; ++i) {
-        if (i >= 0) {
-            strVar += c;
-        }
-    }
-    return strVar;
-}
-//Passes the attributes h, m, s and formats it as a 24hr clock and prints
-string formatTime24(unsigned int h, unsigned int m, unsigned int s) {
-
-    string convert = twoDigitString(h) + ':' + twoDigitString(m) + ':' + twoDigitString(s);
-    return convert;
-}
-//Passes the attributes h, m, s and formats it as a 24hr clock
-string formatTime12(unsigned int h, unsigned int m, unsigned int s) {
-
-    string convert;
-    // code checks to see how h should be converted from a 24hr clock to a 12hr clock and prints
-    if (h >= 13 && h <= 23) {
-        h = h - 12;
-        convert = twoDigitString(h) + ':' + twoDigitString(m) + ':' + twoDigitString(s) + " " + "P M";
-        return convert;
-    }
-    if (h == 0) {
-        h = 12;
-        convert = twoDigitString(h) + ':' + twoDigitString(m) + ':' + twoDigitString(s) + " " + "A M";
-        return convert;
-    }
-    if (h == 12) {
-        convert = twoDigitString(h) + ':' + twoDigitString(m) + ':' + twoDigitString(s) + " " + "P M";
-        return convert;
-    }
-    else {
-        convert = twoDigitString(h) + ':' + twoDigitString(m) + ':' + twoDigitString(s) + " " + "A M";
-        return convert;
-    }
-}
-//function that can be called to display user menu to terminal
-void printMenu() {
-    cout << "                *************************" << endl;
-    cout << "                * 1 - Add One Hour      *" << endl;
-    cout << endl;
-    cout << "                * 2 - Add One Minute    *" << endl;
-    cout << endl;
-    cout << "                * 3 - Add One Second    *" << endl;
-    cout << endl;
-    cout << "                * 4 - Exit Program      *" << endl;
-    cout << "                *************************" << endl;
-    cout << endl;
-    cout << "                    Enter menu option" << endl;
-}
-//function to display the 24hr and 12Hour clocks. The functions formatTime12 and formatTime24 are called to display time
-void displayClocks(unsigned int h, unsigned int m, unsigned int s) {
-
-    cout << nCharString(27, '*') << nCharString(3, ' ') << nCharString(27, '*') << endl;
-    cout << nCharString(1, '*') << nCharString(6, ' ') << "12-HOUR CLOCK" << nCharString(6, ' ') << nCharString(1, '*') << nCharString(3, ' ');
-    cout << nCharString(1, '*') << nCharString(6, ' ') << "24-HOUR CLOCK" << nCharString(6, ' ') << nCharString(1, '*') << endl;
-    cout << endl;
-    cout << nCharString(1, '*') << nCharString(6, ' ') << formatTime12(h, m, s) << nCharString(7, ' ') << nCharString(1, '*') << nCharString(3, ' ');
-    cout << nCharString(1, '*') << nCharString(8, ' ') << formatTime24(h, m, s) << nCharString(9, ' ') << nCharString(1, '*') << endl;
-    cout << nCharString(27, '*') << nCharString(3, ' ') << nCharString(27, '*') << endl;
-}
-//function to add one hour of time after user input using .get and .set
-//Time is our getter/setter class using a passby reference variable to send the addtion of 1 to the class method to be set
-void addOneHour(Time& hVar) {
-
-    int h;
-    if (hVar.getHour() >= 0 && hVar.getHour() <= 22) {
-        h = hVar.getHour() + 1;
-        hVar.setHour(h);
-        return;
-    }
-    if (hVar.getHour() == 23) {
-        h = 0;
-        hVar.setHour(h);
-    }
-}
-//function to add one minute of time after user input using .get and .set
-void addOneMinute(Time& minVar) {
-
-    int m;
-    if (minVar.getMinute() >= 0 && minVar.getMinute() <= 58) {
-        m = minVar.getMinute() + 1;
-        minVar.setMinute(m);
-        return;
-    }
-    if (minVar.getMinute() == 59) {
-        m = 0;
-        addOneHour(minVar);
-        minVar.setMinute(m);
-    }
-}
-//function to add one second of time after user input using .get and .set
-void addOneSecond(Time& secVar) {
-
-    int s;
-    if (secVar.getSecond() >= 0 && secVar.getSecond() <= 58) {
-        s = secVar.getSecond() + 1;
-        secVar.setSecond(s);
-        return;
-    }
-    if (secVar.getSecond() == 59) {
-        s = 0;
-        addOneMinute(secVar);
-        secVar.setSecond(s);
-    }
+	delete[] procname;
 }
 
-void mainMenu(Time myTime) {
-    int n = 0;
+/*
+Description:
+	To call this function, pass the name of the Python functino you wish to call and the string parameter you want to send
+Example:
+	int x = callIntFunc("PrintMe","Test");
+Output:
+	Python will print on the screen:
+		You sent me: Test
+Return:
+	100 is returned to the C++
+*/
+int callIntFunc(string proc, string param)
+{
+	char* procname = new char[proc.length() + 1];
+	std::strcpy(procname, proc.c_str());
 
-    // looping switch case for user input
-    while (n != 4) {
+	char* paramval = new char[param.length() + 1];
+	std::strcpy(paramval, param.c_str());
 
-        system("CLS");// clears screen found at https://mathbits.com/MathBits/CompSci/Screen/clear.htm
-        displayClocks(myTime.getHour(), myTime.getMinute(), myTime.getSecond());//Calls displayClock to get Hour, Minute, Second
-        printMenu();//calls print menu function
 
-        cin >> n;
+	PyObject* pName, * pModule, * pDict, * pFunc, * pValue = nullptr, * presult = nullptr;
+	// Initialize the Python Interpreter
+	Py_Initialize();
+	// Build the name object
+	pName = PyUnicode_FromString((char*)"PythonCode");
+	// Load the module object
+	pModule = PyImport_Import(pName);
+	// pDict is a borrowed reference 
+	pDict = PyModule_GetDict(pModule);
+	// pFunc is also a borrowed reference 
+	pFunc = PyDict_GetItemString(pDict, procname);
+	if (PyCallable_Check(pFunc))
+	{
+		pValue = Py_BuildValue("(z)", paramval);
+		PyErr_Print();
+		presult = PyObject_CallObject(pFunc, pValue);
+		PyErr_Print();
+	}
+	else
+	{
+		PyErr_Print();
+	}
+	//printf("Result is %d\n", _PyLong_AsInt(presult));
+	Py_DECREF(pValue);
+	// Clean up
+	Py_DECREF(pModule);
+	Py_DECREF(pName);
+	// Finish the Python Interpreter
+	Py_Finalize();
 
-        switch (n) {
-        case 1:
-            addOneHour(myTime);
-            break; //prevents fall through
-        case 2:
-            addOneMinute(myTime);
-            break;
-        case 3:
-            addOneSecond(myTime);
-            break;
-        case 4:
-            cout << "Goodbye" << endl; //exits loop 
-            break;
-        default:
-            cout << "Invald Entry" << endl; //default print statement
-        }
-    }
+	// clean 
+	delete[] procname;
+	delete[] paramval;
+
+
+	return _PyLong_AsInt(presult);
 }
-int main() {
-    Time myObj(21, 30, 0); //initialized the object myObj and passes the attributes into the time class to initialized the start time of the clock
-    mainMenu(myObj); //calls the user menu function
-    return 0;//closes program
+
+/*
+Description:
+	To call this function, pass the name of the Python functino you wish to call and the string parameter you want to send
+Example:
+	int x = callIntFunc("doublevalue",5);
+Return:
+	25 is returned to the C++
+*/
+int callIntFunc(string proc, int param)
+{
+	char* procname = new char[proc.length() + 1];
+	std::strcpy(procname, proc.c_str());
+
+	PyObject* pName, * pModule, * pDict, * pFunc, * pValue = nullptr, * presult = nullptr;
+	// Initialize the Python Interpreter
+	Py_Initialize();
+	// Build the name object
+	pName = PyUnicode_FromString((char*)"PythonCode");
+	// Load the module object
+	pModule = PyImport_Import(pName);
+	// pDict is a borrowed reference 
+	pDict = PyModule_GetDict(pModule);
+	// pFunc is also a borrowed reference 
+	pFunc = PyDict_GetItemString(pDict, procname);
+	if (PyCallable_Check(pFunc))
+	{
+		pValue = Py_BuildValue("(i)", param);
+		PyErr_Print();
+		presult = PyObject_CallObject(pFunc, pValue);
+		PyErr_Print();
+	}
+	else
+	{
+		PyErr_Print();
+	}
+	//printf("Result is %d\n", _PyLong_AsInt(presult));
+	Py_DECREF(pValue);
+	// Clean up
+	Py_DECREF(pModule);
+	Py_DECREF(pName);
+	// Finish the Python Interpreter
+	Py_Finalize();
+
+	// clean 
+	delete[] procname;
+
+	return _PyLong_AsInt(presult);
+}
+
+int main(){
+
+	ifstream itemFile; //input file stream 
+	string item;
+	int count; 
+	int i = 0;
+
+	// Changes the color of the text being displayed to green
+	system("Color 02"); 
+
+	int menuSelection;
+	do { //do while loop for the menu selection
+		cout << "        Make a selection         " << endl;
+		cout << "*********************************" << endl;
+		cout << "* 1.  List all items purchased  *" << endl;
+		cout << "* 2.  Search for single item    *" << endl;
+		cout << "* 3.  Histogram of items        *" << endl;
+		cout << "* 4.  Exit Program              *" << endl;
+		cout << "*********************************" << endl;
+		cout << endl;
+
+		do { //do while loop for the user input validation
+
+			cin >> menuSelection;
+			if (cin.fail()) {
+				cin.clear(); //clears cin buffer
+				cin.ignore(80, '\n');
+			}
+		} while (cin.fail()); //loops wull cin.fail is trur
+
+		switch (menuSelection) {
+		case 1:
+			//calls the Python definition to produce a dictionary and print to the terminal
+			CallProcedure("itemsSoldList"); 
+			cout << endl;
+			break; //prevents fall through of switch case
+		case 2:
+			cout << "Seach For Item Quantity" << endl;
+
+				cin >> item; //stores user input into variable
+				item[0] = toupper(item[0]); //sets the first character of user input to be capitalized
+
+				// Passes the name of the Python function and the user input as the string parameter then prints to terminal
+				cout << item << "                " << callIntFunc("itemsSearch", item) << endl;
+			cout << endl;
+			break;
+		case 3:
+			cout << "Histogram Of Items" << endl;
+			CallProcedure("itemsHistograms");
+
+			// Opens .dat file
+			itemFile.open("frequency.dat");
+
+			// Code to check if .dat file is open properly
+			if (!itemFile.is_open()) {
+				cout << "Could not open file frequency.dat" << endl;
+				return 1;
+			}
+			else {
+				cout << ("      Item Histogram") << endl;
+				cout << ("============================= ") << endl;
+				cout << ("Item               Number Sold") << endl;
+				cout << ("-----------------------------") << endl;
+				
+				/* while the stream extraction operator is still able to get a string from the .dat 
+				 * the loop will continue through the end of the file.  
+				 * I originally tried eof but learned that it only returns true after reading the end of the stream 
+				 * and does not indicate, that the next read will be the end of the stream.
+				 * I used a for loop and the extraction operator to print '*' for each item count
+				*/ 
+				while (itemFile >> item) {
+					cout <<left<< setw(11) << item << right << setw(10);
+					itemFile >> count;
+						for (i = 0; i < count; ++i) {
+							cout << '*';
+						}
+					cout << endl;
+				}
+			}
+			cout << endl;
+			itemFile.close(); //closes file
+			break;
+		case 4:
+			//Exits program after user enters 4
+			cout << "Exit Program" << endl;
+			break;
+
+			// default used as partial user input error handling
+		default:
+			cout << "Not a valid menu choice" << endl;
+			cout << endl;
+			break;
+		}
+	} while (menuSelection != 4);
+	return 0;
 }
